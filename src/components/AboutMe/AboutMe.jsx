@@ -1,4 +1,4 @@
-import photo from '../../images/me.jpg';
+import photo from '../../images/me.jpeg';
 import './AboutMe.css';
 import { NavLink } from 'react-router-dom';
 
@@ -10,13 +10,10 @@ function AboutMe() {
         <div className="aboutme__profile">
           <div className="aboutme__data">
             <div className="aboutme__about">
-              <h3 className="aboutme__name">Алексей</h3>
-              <p className="aboutme__brief">Начинающий фронтэнд-разработчик, 21 год</p>
-              <p className="aboutme__biography">Живу в Красногорске. 
-              Студент РосНОУ по специальности связанной с IT, но поработать в этой области не довелось.
-              Я люблю смотреть фильмы, слушать музыку и заниматься в спортзале. 
-              Фронтэнд-разработка и программирование интересны ещё с школьных времен, и я хочу 
-              актуализировать свои знания и развиваться в этом направлении.</p>
+              <h3 className="aboutme__name">Виталий</h3>
+              <p className="aboutme__brief">Фронтэнд-разработчик, 30 лет</p>
+              <p className="aboutme__biography">Я родился и живу в Саратове, закончил факультет экономики&nbsp;СГУ. У меня есть жена 
+и&nbsp;дочь. Я люблю слушать музыку, а ещё увлекаюсь бегом. Недавно начал кодить. С 2015 года работал в компании «СКБ Контур». После того, как прошёл курс по <nobr>веб-разработке,</nobr> начал заниматься <nobr>фриланс-заказами</nobr> и ушёл с постоянной работы.</p>
             </div>
             <NavLink to="https://github.com/LEH1CH" className="aboutme__link link-transparency" target="_blank">Github</NavLink>
           </div>

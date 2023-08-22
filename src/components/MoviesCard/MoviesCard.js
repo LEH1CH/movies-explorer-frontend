@@ -8,7 +8,7 @@ function MoviesCard(props) {
     }`;
 
   return (
-    <article className='movies-card'>
+    <li className='movies-card'>
       {props.drawSaved ? (
         <button
           type='button'
@@ -38,7 +38,7 @@ function MoviesCard(props) {
         </div>
         <p className='movies-card__duration'>{timeToStr(props.card.time)}</p>
       </div>
-    </article>
+    </li>
   );
 }
 

@@ -55,8 +55,8 @@
   }
   
   .header__nav {
-    margin: 0 1px 0 44px;
-    width: 33%;
+    margin: 0 4px 5px 44px;
+    width: auto;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -66,6 +66,7 @@
   
   .header__nav_type_burger {
     justify-content: flex-end;
+    margin: 0 1px 0px 44px;
   }
   
   .header__film-link-items {
@@ -113,7 +114,7 @@
   
   .header__account-button {
     margin-right: 27px;
-    padding-bottom: 3px;
+    padding: 0 6px 2px 41px;
     color: #000000;
     cursor: pointer;
     font-size: 14px;
@@ -141,7 +142,7 @@
     border-radius: 6px;
     background-color: #F9F9F9;
     background-image: url(../../images/icon__COLOR_icon-main.svg);
-    background-position: 9px 7px;
+    background-position: 9px 8px;
     background-repeat: no-repeat;
     background-size: 12px 14px;
   }
@@ -149,7 +150,7 @@
   .header__auth-items {
     list-style: none;
     margin: 0;
-    padding: 0;
+    padding: 0 0 5px 0;
     display: flex;
     justify-content: flex-end;
     flex-direction: row;
@@ -210,17 +211,13 @@
   
   @media (max-width: 800px) {
     .header__content {
-      padding: 16px 30px;
+      padding: 18px 30px;
     }
   
     .header__film-link_type_active {
       padding-bottom: 6px;
       border-bottom: solid 2px rgb(0, 0, 0);
     }
-  
-    .header__account-button {
-      transform: translateX(8px);
-    }  
   
     .header__film-link {
       font-size: 18px;
@@ -258,10 +255,14 @@
       width: 54px;
       height: 26px;
     }
+
+    .header__account-button {
+      transform: translateX(-26px)
+    }
   
     .header__burger-menu {
       padding-top: 145px;
-      padding-bottom: 54px;
+      padding-bottom: 199px;
     }
     
     .header__burger-button_type_close {
@@ -277,6 +278,6 @@
       width: 34px;
       height: 36px;
       background-size: contain;
-      transform: translate(-2px, -1px);
+      transform: translate(2px, -1px);
     }
   }

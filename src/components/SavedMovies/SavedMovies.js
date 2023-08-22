@@ -5,7 +5,7 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 
 function SavedMovies(props) {
   return (
-    <main className='main'>
+    <main className='main saved-movies'>
       <SearchForm />
       <MoviesCardList drawSaved={true} films={props.listOfMovies} />
       {props.loading && <Preloader />}

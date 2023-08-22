@@ -11,7 +11,7 @@ function Header(props) {
   const { width } = useWindowDimensions();
 
   React.useEffect(function () {
-    if (width>800) {
+    if (width>1000) {
       props.burgerClick(true);
     }
   }, [width]);
@@ -34,16 +34,16 @@ function Header(props) {
         {!props.loggedIn
         ?
           (
-            <ul className="header__auth-items">
+            <nav className="header__auth-items">
               <li className="header__auth-item">
                 <NavLink to="/signup" className="header__signup link-transparency">Регистрация</NavLink>
               </li>
               <li className="navigation__item">
                 <button type="button" className="header__signin-button button-transparency" onClick={()=>{navigate("/signin", {replace:true});}}>Войти</button>
               </li>                
-            </ul>
+            </nav>
           )
-        : width>800
+        : width>1000
           ? 
             (
               <div className="header__nav">
@@ -64,7 +64,7 @@ function Header(props) {
                 ( 
                   <div className="header__nav header__nav_type_burger">
                     <div className="header__burger-background">
-                      <div className="header__burger-menu">
+                      <nav className="header__burger-menu">
                         <button type="button" className="header__burger-button header__burger-button_type_close button-transparency" onClick={handleBurgerClick}/>
                         <ul className="header__film-link-items header__film-link-items_type_burger">
                           <li className="header__film-link-item">
@@ -78,7 +78,7 @@ function Header(props) {
                           </li>
                         </ul>
                         <button type="button" className="header__account-button button-transparency" onClick={()=>{navigate("/profile", {replace:true})}}>Аккаунт</button>
-                      </div>
+                      </nav>
                     </div>
                   </div>
                 )

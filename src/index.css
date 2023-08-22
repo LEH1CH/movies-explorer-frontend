@@ -32,3 +32,13 @@
 .button-transparency:hover {
   opacity: 0.8;
 }
+
+.saved-movies {
+  margin-bottom: 150px;
+}
+
+@media (max-width: 1050px) {
+  .saved-movies {
+    margin-bottom: 86px;
+  }
+}

@@ -1,6 +1,6 @@
 .page404 {
     width:100%;
-    background-color: #202020;
+    background-color: #ffffff;
   }
   
   .page404__content {
@@ -16,7 +16,7 @@
   .page404__title {
     margin: 0;
     padding: 0;
-    color: #FFF;
+    color: #000000;
     text-align: center;
     font-size: 140px;
     font-family: Inter;
@@ -26,7 +26,7 @@
   }
   .page404__subtitle {
     margin: 5px 0 0 0;
-    color: #FFF;
+    color: #000000;
     text-align: center;
     font-size: 16px;
     font-family: Inter;
@@ -36,7 +36,7 @@
   }
   .page404__back-button {
     margin: 184px 0 0 0;
-    color: #4285F4;
+    color: #000000;
     text-align: center;
     font-size: 14px;
     font-family: Inter;

@@ -13,7 +13,7 @@
     justify-content: space-between;
     gap: 70px;
     box-sizing: border-box;
-    padding: 110px 70px;
+    padding: 111px 70px 110px;
   }
   
   .aboutproject__title {
