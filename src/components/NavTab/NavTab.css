@@ -1,0 +1,56 @@
+.navtab {
+	background-color: black;
+    min-height: 66px;
+	margin: 0 auto;
+}
+
+.navtab__list {
+	margin: 0;
+	padding: 14px 0 0 0;
+	display: flex;
+    align-items: center;
+	justify-content: center;
+	list-style: none;
+}
+
+.navtab__item {
+	padding: 10px 20px;
+}
+
+.navtab__link {
+	text-decoration: none;
+	color: #fff;
+	font-weight: 500;
+    font-family: Inter;
+	line-height: 16px;
+	font-size: 13px;
+	cursor: pointer;
+    border-bottom: #fff solid 1px;
+	transition: all .3s ease-in-out;
+}
+
+.navtab__link:hover{
+	opacity: .7;
+}
+
+@media (max-width: 1024px) {
+	.navtab__list {
+		gap: 0px;
+	}
+}
+
+@media (max-width: 544px) {
+	.navtab__list {
+		padding-top: 18px;
+		gap: 15px;
+	}
+
+	.navtab__item {
+		padding: 5px 5px 5px 5px;
+		border-radius: 6px;
+	}
+
+	.navtab__link {
+		font-size: 11px;
+	}
+}

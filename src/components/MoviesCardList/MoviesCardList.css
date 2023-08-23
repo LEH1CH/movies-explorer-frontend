@@ -1,0 +1,96 @@
+.movies-card-list {
+    margin: 0;
+    width: 100%;
+  }
+  
+  .movies-card-list__content {
+    margin: 0 auto;
+    max-width: 1280px;
+    box-sizing: border-box;
+    padding: 59px 70px 103px 70px;
+  }
+  
+  .movies-card-list__items {
+    margin: 0;
+    padding-top: 80px;
+    padding-left: 0px;
+    border-top: 1px #E8E8E8 groove;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 360px);
+    row-gap: 47px;
+    column-gap: 30px;
+    justify-content: left;
+    list-style-type: none;
+  }
+  
+  .movies-card-list__more {
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    width: 100%;
+  }
+  
+  .movies-card-list__more-button {
+    margin: 67px auto 0 auto;
+    display: block;
+    padding: 0;
+    color: #000000;
+    text-align: center;
+    font-size: 12px;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    border: none;
+    width: 28%;
+    height: 36px;
+    border-radius: 6px;
+    background: #F9F9F9;
+  }
+  
+  /*@media (max-width: 1279px) {
+    .movies-card-list__items {
+      column-gap: 29px;
+    }
+  }*/
+
+  @media (max-width: 1300px) {
+    .movies-card-list__items {
+      row-gap: 48px;
+      column-gap: 30px;
+      grid-template-columns: repeat(auto-fit, minmax(339px, 1fr));
+    }
+  }
+  
+  @media (max-width: 800px) {
+    .movies-card-list__content {
+      padding: 70px 30px 103px 30px;
+    }
+
+    .movies-card-list__more-button {
+        margin: 51px auto 0 auto;
+        width: 45%;
+      }
+      .movies-card-list__items {
+        row-gap: 36px;
+        column-gap: 30px;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      }
+  }
+  
+  @media (max-width: 500px) {
+    .movies-card-list__content {
+      padding: 25px 10px 97px 10px;
+    }
+  
+    .movies-card-list__items {
+      padding-top: 50px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      row-gap: 20px;  
+    }
+
+    .movies-card-list__more-button {
+        margin: 44px auto 0 auto;
+        width: 80%;
+      }
+  }

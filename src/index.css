@@ -1,0 +1,44 @@
+@import url(./vendor/normalize.css);
+@import url(./vendor/fonts/fonts.css);
+
+.body-style {
+  margin: 0 auto;
+  line-height: 1;
+  background-color: #202020;
+  font-family: 'Inter', 'Arial', sans-serif;
+}
+
+.main {
+  width: 100%;
+  min-height: 600px;
+}
+
+.link-transparency {
+  opacity: 1;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+
+.link-transparency:hover {
+  opacity: 0.7;
+}
+
+.button-transparency {
+  opacity: 1;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+
+.button-transparency:hover {
+  opacity: 0.8;
+}
+
+.saved-movies {
+  margin-bottom: 150px;
+}
+
+@media (max-width: 1050px) {
+  .saved-movies {
+    margin-bottom: 86px;
+  }
+}

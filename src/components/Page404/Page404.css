@@ -1,0 +1,76 @@
+.page404 {
+    width:100%;
+    background-color: #ffffff;
+  }
+  
+  .page404__content {
+    max-width: 1280px;
+    padding: 246px 70px 60px 70px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .page404__title {
+    margin: 0;
+    padding: 0;
+    color: #000000;
+    text-align: center;
+    font-size: 140px;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;  
+  }
+  .page404__subtitle {
+    margin: 5px 0 0 0;
+    color: #000000;
+    text-align: center;
+    font-size: 16px;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;  
+  }
+  .page404__back-button {
+    margin: 184px 0 0 0;
+    color: #000000;
+    text-align: center;
+    font-size: 14px;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    background-color:transparent;
+    border: none;
+    max-width: 100px;
+  }
+  
+  @media (max-width: 800px) {
+    .page404__content {
+      max-width: 1280px;
+      padding: 408px 30px 222px 30px;
+    }
+  }
+  
+  @media (max-width: 500px) {
+    .page404__content {
+      padding: 329px 30px 30px 30px;
+    }
+  
+    .page404__title {
+      font-size: 80px;
+    }
+    
+    .page404__subtitle {
+      margin-top: 10px;  
+      font-size: 12px;
+    }
+    
+    .page404__back-button {
+      margin-top: 284px;  
+      font-size: 12px;    
+    }
+  }
