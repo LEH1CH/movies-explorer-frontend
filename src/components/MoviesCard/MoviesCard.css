@@ -96,7 +96,7 @@
   }
 
   .movies-card__like-div {
-    width: 90%;
+    width: 80%;
     margin: 0;
     padding: 0;
     line-height: 1;
@@ -109,7 +109,7 @@
   
   .movies-card__duration {
     margin: 0;
-    padding: 1px 7px;
+    padding: 1px 7px 1 7px;
     padding-right: 11px;
     background-color: #F9F9F9;
     border-radius: 3px;
