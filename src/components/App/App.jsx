@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useNavigate, useLocation, Routes, Route } from "react-router-dom";
 import './App.css';
+import React from 'react';
+import { useNavigate, useLocation, Routes, Route } from "react-router-dom";
 
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
@@ -15,53 +15,49 @@ import InfoToolTip from '../InfoToolTip/InfoTooltip';
 import ProtectedRouteElement from '../ProtectedRoute/ProtectedRoute';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
-import { films, savedFilms } from '../../utils/dev_const' //Временные данные
-
-/* Заготовка
-function handleRegisterSubmit() { };
-function handleLoginSubmit() { };
-function handleCardSave() { };
-function handleCardDelete() { };
-*/
+import mainApi from '../../utils/MainApi.js';
+import Preloader from '../Preloader/Preloader';
 
 function App() {
 
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [currentUser, setCurrentUser] = useState({ 
-    name: 'LEH1CH', 
-    email: 'qwerty@qwerty.ru', 
-    _id: 'qwerty' 
+  //Стейт с данными пользователя
+  const [currentUser, setCurrentUser] = React.useState({ 
+    name: '', 
+    email: '', 
+    _id: '',
+    token: ''
   });
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [infoTooltip, setInfoTooltip] = useState({ 
+  //Массив сохранённых фильмов
+  const [savedMovies, setSavedMovies] = React.useState([]);
+  //Залогинен ли пользователь
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  //Данные информационного попапа
+  const [infoTooltip, setInfoTooltip] = React.useState({ 
     isInfoTooltipOpened:false,
     tooltipMessage:"",
     toolTipState:false
   });
-
-  const [isBurgerOpen, setIsBurgerOpen] = useState(false);
-  const [cards, setCards] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [page, setPage] = useState('');
-
+  //Состояние бургера
+  const [isBurgerOpen, setIsBurgerOpen] = React.useState(false);
+  //Текущая страница
+  const [page, setPage] = React.useState('');
+  //Стейт загрузки страницы. Используется для отключения защиты роутов во время проверки токена
+  const [isLoading, setIsLoading] = React.useState(true);
+  //Стейт работы запроса. Используется для блокировки элементов и повторных запросов во время выполнения запроса
+  const [isFetching, setIsFetching] = React.useState(false);
+  
   //Определяем текущую страницу
   React.useEffect(() => {
     setPage(location.pathname);
   }, [location]);
 
-  //Добавляем лисенер нажатия на кнопки для закрытия попапов по Esc 
+  //Проверяем аутентифицирован ли пользователь
   React.useEffect(() => {
-    document.addEventListener("keydown", handleEscPress);
+    handleAuthCheck();
   }, [])
-
-  //Обработчик нажатия на кнопку Esc
-  function handleEscPress(e) {
-    if (e.key === 'Escape') {
-      closeAllPopups();
-    }
-  }
 
   //Обработчик закрытия попапов и бургера
   function closeAllPopups() {
@@ -76,56 +72,214 @@ function App() {
       : setIsBurgerOpen(true);
   }
 
-  //Заглушка обработчика регистрации
-  function handleRegister() {
+  //Открытие модалки с сообщением
+  function showInfoTooltip(message, isOk) {
     setInfoTooltip({    
       isInfoTooltipOpened: true,
-      tooltipMessage:"Вы успешно зарегистрировались!",
-      toolTipState: true
+      tooltipMessage: message,
+      toolTipState: isOk
     });
-    navigate("/signin", {replace:true});
   }
 
-  //Заглушка обработчика логина
-  function handleLogin() {
-    setIsLoggedIn(true);
-    navigate("/movies", {replace:true});
+  //Обработчик регистрации нового пользователя на сервере  
+  function handleRegisterSubmit( newUserData ) {
+    setIsFetching(true);
+    mainApi.register(newUserData)
+      .then((data) => {
+        showInfoTooltip(`Регистрация прошла успешно!`, true);
+        handleLoginSubmit({ email:newUserData.email, password:newUserData.password }, true);
+      })
+      .catch((err) => {
+        err.then(({message}) => {
+          showInfoTooltip(`Не удалось зарегистрировать пользователя! Ошибка: ${message}`, false);
+          setIsFetching(false);
+        })
+      })
+    }
+
+  //Обработчик авторизации пользователя на сервере
+  function handleLoginSubmit( userData , dontDisableFetch = false) {
+    setIsFetching(true);
+    mainApi.login(userData)
+      .then((data) => {
+        localStorage.setItem('token', data.token);
+        handleAuthCheck();
+      })
+      .catch((err) => {
+        err.then(({message}) => {
+          showInfoTooltip(`Не удалось войти в систему! Ошибка: ${message}`, false);
+          setIsFetching(false);
+        })
+      })
   }
 
-  //Заглушка обработчика логаута
+  //Обработчик проверки выполненной авторизации
+  function handleAuthCheck() {
+    const jwt = localStorage.getItem('token');
+    if (jwt) {
+      mainApi.authCheck(jwt)
+        .then(({data}) => {
+          setIsLoggedIn(true);
+          setCurrentUser({ name: data.name, email: data.email, _id: data._id, token: jwt});
+          getSavedMovies(jwt);
+          setIsLoading(false);
+          setIsFetching(false);
+          if((location.pathname === '/signin')||(location.pathname==='/signup')) {
+            navigate("/movies", {replace:true});
+          }
+        })
+        .catch((err) => {
+          err.then(({message}) => {
+            showInfoTooltip(`Не удалось войти в систему! Ошибка: ${message}`, false);
+            setIsFetching(false);
+          })
+        })
+    } else {
+      setIsLoading(false);
+    }
+  }     
+
+ //Обработчик сохранения новых данных пользователя на сервере
+ function handleUpdateUserData(newUserData) {
+  setIsFetching(true);
+  mainApi.modifyProfileData(newUserData, currentUser.token)
+    .then(({ data }) => {
+      setCurrentUser({...currentUser, name: data.name, email: data.email });
+      showInfoTooltip(`Данные профиля успешно изменены!`, true);
+    })
+    .catch((err) => {
+      err.then(({message}) => {
+        showInfoTooltip(`Не удалось сохранить новые данные профиля! Ошибка: ${message}`, false);
+      })
+    })
+    .finally(()=>setIsFetching(false));
+}
+
+  //Обработчик авторизации пользователя на сервере
   function handleLogout() {
+    localStorage.clear();
     setIsLoggedIn(false);
+    setCurrentUser({ name: '', email: '', _id: '', token: '' });
     navigate("/", {replace:true});
+  }    
+
+  //Получение списка сохранённых фильмов
+  function getSavedMovies(jwt) {
+    mainApi.getSavedMovies(jwt)
+    .then(({data})=>{
+      setSavedMovies(data)})
+    .catch((err) => {
+      err.then(({message}) => {
+        showInfoTooltip(`Не удалось загрузить сохранённые фильмы! Ошибка: ${message}`, false);
+      })
+    })
   }
 
-  //Заглушка обработчика редактирования данных пользователя
-  function handleUpdateUserData(name, email) {
-    setCurrentUser({...currentUser, ['name']: name, ['email']: email})
-    setInfoTooltip({    
-      isInfoTooltipOpened: true,
-      tooltipMessage:"Вы успешно изменили данные профиля!",
-      toolTipState: true
-    });
-    navigate("/movies", {replace:true});
+  //Обработчик клика по кнопке лайка
+  function handleLikeClick(movie) {
+    setIsFetching(true);
+    movie.saved
+    ? mainApi.deleteSavedMovie(movie, currentUser.token)
+      .then(({data}) => setSavedMovies(savedMovies.filter((el)=>{return el.movieId !== data.movieId})))
+      .catch((err) => {
+        err.then(({message}) => {
+          showInfoTooltip(`Не удалось удалить фильм! Ошибка: ${message}`, false);
+        })
+      })
+      .finally(()=>setIsFetching(false))
+    : mainApi.addSavedMovie(movie, currentUser.token)
+      .then(({data}) => setSavedMovies([...savedMovies, data]))
+      .catch((err) => {
+        err.then(({message}) => {
+          showInfoTooltip(`Не удалось сохранить фильм! Ошибка: ${message}`, false);
+        })
+      })
+      .finally(()=>setIsFetching(false));
   }
 
+  //Обработчик клика по кнопке удаления карточки
+  function handleDeleteClick(movie) {
+    setIsFetching(true);
+    mainApi.deleteSavedMovie(movie, currentUser.token)
+    .then(({data}) => setSavedMovies(savedMovies.filter((el)=>{return el.movieId !== data.movieId})))
+      .catch((err) => {
+        err.then(({message}) => {
+          showInfoTooltip(`Не удалось удалить фильм! Ошибка: ${message}`, false);
+        })
+      })
+    .finally(()=>setIsFetching(false));
+  }
+
+  //Если грузится, рисуем прелоадер, если нет - App
+  if(isLoading) 
+    return (<Preloader />)
+  
   return (
     <div className="app">
-      <CurrentUserContext.Provider value={currentUser}>
-      {((location.pathname==='/')||(location.pathname==='/movies')||(location.pathname==='/saved-movies')||(location.pathname==='/profile')) && (<Header loggedIn={isLoggedIn} isBurgerOpen={isBurgerOpen} burgerClick={handleBurgerClick}/>)}
-
+      <CurrentUserContext.Provider value={ currentUser }>
+        {((page==='/')||(page==='/movies')||(page==='/saved-movies')||(page==='/profile')) && 
+          (<Header loggedIn={ isLoggedIn } isBurgerOpen={ isBurgerOpen } burgerClick={ handleBurgerClick }/>)}
+        
         <Routes>
-          <Route path="/signup" element={<Register submitBtnCap='Зарегистрироваться' register={handleRegister} title="Добро пожаловать!" />} />
-          <Route path="/signin" element={<Login submitBtnCap='Войти' login={handleLogin} title="Рады видеть!" />} />
-          <Route path="/" element={<Main loggedIn={isLoggedIn} />} />
-          <Route path="*" element={<Page404 prev="/" />} />
-          <Route path="/profile" element={<ProtectedRouteElement element={Profile} updateUserData={handleUpdateUserData} logout={handleLogout} loggedIn={isLoggedIn} />} />
-          <Route path="/movies" element={<ProtectedRouteElement element={Movies} loggedIn={isLoggedIn} loading={isLoading} listOfMovies={films}/>} />
-          <Route path="/saved-movies" element={<ProtectedRouteElement element={SavedMovies} loggedIn={isLoggedIn} loading={isLoading} listOfMovies={savedFilms}/>} />
+          <Route path="/signup" element={ 
+            <Register 
+              submitBtnCap='Зарегистрироваться' 
+              register={handleRegisterSubmit} 
+              title="Добро пожаловать!" 
+              fetching = { isFetching } /> 
+            } />
+
+          <Route path="/signin" element={ 
+            <Login 
+              submitBtnCap='Войти' 
+              login={handleLoginSubmit} 
+              title="Рады видеть!" 
+              fetching = { isFetching } /> 
+            } />
+
+          <Route path="/" element={ 
+            <Main 
+              loggedIn={ isLoggedIn } />
+            } />
+
+          <Route path="/profile" element={ 
+            <ProtectedRouteElement 
+              element={ Profile } 
+              updateUserData={ handleUpdateUserData } 
+              logout={ handleLogout } 
+              loggedIn={ isLoggedIn }
+              showInfoTooltip={ showInfoTooltip }
+              fetching = { isFetching } /> 
+            } />
+
+          <Route path="/movies" element={ 
+            <ProtectedRouteElement 
+              element={ Movies } 
+              loggedIn={ isLoggedIn } 
+              handleLikeClick={ handleLikeClick }
+              savedMovies = { savedMovies }
+              showInfoTooltip={showInfoTooltip} 
+              fetching = { isFetching } /> 
+          } />
+
+          <Route path="/saved-movies" element={
+            <ProtectedRouteElement 
+              element={ SavedMovies } 
+              loggedIn={ isLoggedIn } 
+              handleDeleteClick={ handleDeleteClick }
+              savedMovies = { savedMovies }
+              showInfoTooltip={showInfoTooltip} 
+              fetching = { isFetching } />
+          } />
+
+          <Route path="*" element={ 
+            <Page404 />
+          } />
         </Routes>
       </CurrentUserContext.Provider>
       
-      {((location.pathname==='/')||(location.pathname==='/movies')||(location.pathname==='/saved-movies')) && (<Footer />)}
+      {((location.pathname==='/')||(location.pathname==='/movies')||(location.pathname==='/saved-movies')) && 
+        (<Footer />)}
       
       <InfoToolTip 
         isOpen={infoTooltip.isInfoTooltipOpened} 

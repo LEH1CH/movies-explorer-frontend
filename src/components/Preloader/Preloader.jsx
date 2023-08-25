@@ -4,7 +4,7 @@ import './Preloader.css'
 const Preloader = () => {
   return (
     <div className="preloader">
-      <span className="preloader__round"></span>
+        <span className="preloader__round"></span>
     </div>
   )
 };

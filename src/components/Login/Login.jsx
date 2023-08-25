@@ -14,7 +14,7 @@ function Login(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    props.login();
+    props.login({ email:values.email, password:values.password });
   } 
 
   return (
@@ -26,15 +26,15 @@ function Login(props) {
             <h1 className="login__title">{props.title}</h1>
             <fieldset className="login__fieldset">
               <label className="login__fieldset-name">E-mail</label>
-              <input type="email" onChange={handleChange} className={`login__input ${errors.email && "login__input_type_error"}`} placeholder="Адрес электронной почты" name="email" required minLength="2" maxLength="40" />
+              <input type="email" onChange={handleChange} className={`login__input ${errors.email && "login__input_type_error"}`} placeholder="Адрес электронной почты" name="email" disabled={ props.fetching } required minLength="2" maxLength="40" pattern="^[a-zA-Z0-9]([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+){1,}\.([a-zA-Z]+)$" autoComplete="new-password" />
               <span className={`login__input-error ${!isValid ? "login__input-error_visible" : "" }`}>{errors.email}</span>
             </fieldset>
             <fieldset className="login__fieldset">
               <label className="login__fieldset-name">Пароль</label>
-              <input type="password" onChange={handleChange} className={`login__input ${errors.password && "login__input_type_error"}`} placeholder="Пароль" name="password" required minLength="4" maxLength="40" autoComplete="new-password" />
+              <input type="password" onChange={handleChange} className={`login__input ${errors.password && "login__input_type_error"}`} placeholder="Пароль" name="password" disabled={ props.fetching } required minLength="4" maxLength="40" autoComplete="new-password" />
               <span className={`login__input-error ${!isValid ? "login__input-error_visible" : "" }`}>{errors.password}</span>
             </fieldset>
-            <button type="submit" className={`login__submit-button ${!isValid ? "login__submit-button_inactive" : "button-transparency"}`} name="submitBtn" disabled={!isValid}>{props.submitBtnCap}</button>
+            <button type="submit" className={`login__submit-button ${!isValid || props.fetching ? "login__submit-button_inactive" : "button-transparency"}`} name="submitBtn" disabled={!isValid || props.fetching}>{props.submitBtnCap}</button>
               <span className="login__span-text">Ещё не зарегистрированы? <NavLink to="/signup" className="login__link link-transparency">Регистрация</NavLink></span>
           </form>
         </div>
