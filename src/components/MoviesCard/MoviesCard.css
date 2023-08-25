@@ -15,7 +15,7 @@
   }
   
   .movies-card__item-info {
-    padding: 16px 12px 12px;
+    padding: 16px 0 12px;
     box-sizing: border-box;
     width: 100%;
     display: flex;
@@ -109,7 +109,10 @@
   
   .movies-card__duration {
     margin: 0;
+    padding: 1px 7px;
     padding-right: 11px;
+    background-color: #F9F9F9;
+    border-radius: 3px;
     color: #8B8B8B;
     font-size: 11px;
     font-family: Inter;
