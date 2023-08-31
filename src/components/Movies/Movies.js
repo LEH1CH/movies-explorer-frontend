@@ -94,10 +94,8 @@ function Movies(props) {
   //если фильмы загружены -> делает обычный поиск
   React.useEffect(
     function () {
-      if (searchQuery && !moviesData.length) {
-        handleFirstSearch();
-      } else if (searchQuery) {
-        handleSearch(moviesData);
+      if (searchQuery) {
+        moviesData.length ? handleSearch(moviesData) : handleFirstSearch();
       }
     },
     [searchQuery]
