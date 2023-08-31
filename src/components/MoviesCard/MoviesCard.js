@@ -6,8 +6,9 @@ function MoviesCard(props) {
   const [isSaved, setIsSaved] = React.useState(false);
   const timeToStr = (min) =>
     `${Math.floor(min / 60) > 0 ? Math.floor(min / 60) + 'ч' : ''}${
-      min % 60 > 0 ? (min % 60) + 'м' : ''
+      min % 60 > 0 ? ' ' + (min % 60) + 'м' : ''
     }`;
+
   const { trailerLink, image, nameRU, duration, saved } = props.movie;
 
   function handleLikeClick() {
