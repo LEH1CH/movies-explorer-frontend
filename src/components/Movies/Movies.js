@@ -65,14 +65,8 @@ function Movies(props) {
       localStorage.setItem('movies', JSON.stringify(convertedArray));
       setMoviesData(convertedArray);
       handleSearch(convertedArray);
+      setIsLoading(false);
     });
-  }
-
-  //Обычный поиск: ищем фильмы -> обновляем сохранённые фильмы в результате выдачи
-  function handleSearch(moviesArray) {
-    const result = searchMovies(moviesArray, searchQuery);
-    setSearchResult(updateSavedMovies(result, props.savedMovies));
-    setIsLoading(false);
   }
 
   //производит установку чекбокса в состояние state и сохраняет данные в последнем поиске
@@ -109,6 +103,13 @@ function Movies(props) {
     } else {
       props.showInfoTooltip('Нужно ввести ключевое слово', false);
     }
+  }
+
+  //Обычный поиск: ищем фильмы -> обновляем сохранённые фильмы в результате выдачи
+  function handleSearch(moviesArray) {
+    const result = searchMovies(moviesArray, searchQuery);
+    setSearchResult(updateSavedMovies(result, props.savedMovies));
+    setIsLoading(false);
   }
 
   return (
