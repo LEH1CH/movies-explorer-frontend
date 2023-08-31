@@ -65,7 +65,6 @@ function Movies(props) {
       localStorage.setItem('movies', JSON.stringify(convertedArray));
       setMoviesData(convertedArray);
       handleSearch(convertedArray);
-      setIsLoading(false);
     });
   }
 
