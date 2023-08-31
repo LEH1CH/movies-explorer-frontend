@@ -8,6 +8,7 @@ Movies Explorer - это дипломный проект, являющийся �
 ___
 * ##### *https://leh1ch-diploma.nomoredomainsicu.ru/* - Фронтенд (Макет - light-4)
 * ##### *https://api.leh1ch-diploma.nomoreparties.co/* - API
+* ##### *https://github.com/LEH1CH/movies-explorer-frontend/pull/2* - Pull requests
 ___
 ### Что было сделано:
 Фронтенд:
