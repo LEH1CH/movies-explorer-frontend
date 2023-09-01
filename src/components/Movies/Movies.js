@@ -87,11 +87,14 @@ function Movies(props) {
   //если фильмы загружены -> делает обычный поиск
   React.useEffect(
     function () {
-      if (searchQuery) {
-        moviesData.length ? handleSearch(moviesData) : handleFirstSearch();
+      if (searchQuery !== lastSearch.query) {
+        // Проверяем, изменился ли searchQuery
+        if (searchQuery) {
+          moviesData.length ? handleSearch(moviesData) : handleFirstSearch();
+        }
       }
     },
-    [searchQuery]
+    [searchQuery, lastSearch.query]
   );
 
   //обработчик сабмита в форме поиска
