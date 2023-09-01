@@ -87,19 +87,16 @@ function Movies(props) {
   //если фильмы загружены -> делает обычный поиск
   React.useEffect(
     function () {
-      if (searchQuery !== lastSearch.query) {
-        // Проверяем, изменился ли searchQuery
-        if (searchQuery) {
-          moviesData.length ? handleSearch(moviesData) : handleFirstSearch();
-        }
+      if (searchQuery) {
+        moviesData.length ? handleSearch(moviesData) : handleFirstSearch();
       }
     },
-    [searchQuery, lastSearch.query]
+    [searchQuery, moviesData]
   );
 
   //обработчик сабмита в форме поиска
   function handleSearchClick(queryString) {
-    if (checkQuery(queryString)) {
+    if (checkQuery(queryString) && queryString !== searchQuery) {
       setIsLoading(true);
       setSearchQuery(queryString);
     } else {
