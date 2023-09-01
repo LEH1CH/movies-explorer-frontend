@@ -100,7 +100,10 @@ function Movies(props) {
       setIsLoading(true);
       setSearchQuery(queryString);
     } else {
-      props.showInfoTooltip('Нужно ввести ключевое слово', false);
+      // Только отображаем сообщение, если новый queryString не совпадает с текущим searchQuery
+      if (queryString !== searchQuery) {
+        props.showInfoTooltip('Нужно ввести ключевое слово', false);
+      }
     }
   }
 
