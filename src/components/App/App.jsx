@@ -211,7 +211,7 @@ function App() {
   }
 
   //Если грузится, рисуем прелоадер, если нет - App
-  if(isLoading) 
+  if(isFetching) 
     return (<Preloader />)
   
   return (
